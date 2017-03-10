@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,7 +14,14 @@ import Button from 'Medusa/app/components/Button';
 import Label from 'Medusa/app/components/Label';
 
 export default class LoginPage extends Component {
+  constructor(props) {
+      super(props);
+      this.state = {username: '', password: ''};
+  }
+
   render() {
+    const {username, password} = this.state;
+
     return (
       <ScrollView>
         <Container>
@@ -24,8 +32,10 @@ export default class LoginPage extends Component {
           <Label text="Enter your user name and password to log in."/>
         </Container>
         <Container>
-          <Label text="Username or Email" />
+          <Label text="User Name or Email" />
           <TextInput
+            onChangeText={username => this.setState({ username })}
+            value={username}
             autoCapitalize={'none'}
             autoCorrect={false}
             selectionColor={'#F58546'}
@@ -35,6 +45,8 @@ export default class LoginPage extends Component {
         <Container>
           <Label text="Password" />
           <TextInput
+            onChangeText={password => this.setState({ password })}
+            value={password}
             autoCapitalize={'none'}
             autoCorrect={false}
             selectTextOnFocus={true}
@@ -44,18 +56,21 @@ export default class LoginPage extends Component {
           />
         </Container>
         <View style={styles.footer}>
-          <Container>
-              <Button
-                  label="LOGIN"
-                  styles={{button: styles.primaryButton, label: styles.buttonWhiteText}}
-                  onPress={this.press.bind(this)} />
-          </Container>
-          <Container>
-              <Button
-                  label="CANCEL"
-                  styles={{label: styles.buttonBlackText}}
-                  onPress={this.press.bind(this)} />
-          </Container>
+          <View style={styles.form_buttons}>
+            <Container>
+                <Button
+                    label="LOGIN"
+                    disabled={!username || !password}
+                    styles={{button: styles.primaryButton, label: styles.buttonWhiteText}}
+                    onPress={this.press.bind(this)} />
+            </Container>
+            <Container>
+                <Button
+                    label="CANCEL"
+                    styles={{button: styles.secondaryButton, label: styles.buttonBlackText}}
+                    onPress={this.press.bind(this)} />
+            </Container>
+          </View>
           <Container>
             <Button
               label="Forgot your password?"
@@ -68,7 +83,7 @@ export default class LoginPage extends Component {
   }
 
   press() {
-  //execute any code here
+    return Alert.alert('Testing');
   }
 }
 
@@ -80,7 +95,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 30,
-    color: '#333'
+    color: '#333',
+    margin: 5
   },
   label: {
     color: '#F58546'
@@ -92,16 +108,31 @@ const styles = StyleSheet.create({
   },
   buttonWhiteText: {
     fontSize: 20,
-    color: '#FFF',
+    color: '#FFF'
   },
   buttonBlackText: {
-      fontSize: 20,
-      color: '#F58546'
+    fontSize: 20,
+    color: '#F58546'
   },
   primaryButton: {
-      backgroundColor: '#F58546'
+    width: 120,
+    backgroundColor: '#F58546',
+    borderWidth: 1,
+    borderColor: '#F58546',
+    marginRight: 10
+  },
+  secondaryButton: {
+    width: 120,
+    borderWidth: 1,
+    borderColor: '#F58546',
+    marginLeft: 10
   },
   footer: {
      marginTop: 100
+  },
+  form_buttons: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });
